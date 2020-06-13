@@ -6,6 +6,7 @@ data BrainBreakOperation = Increment
     | MoveLeft
     | Read
     | Write
+    | Comment
     | Loop BrainBreakBlock
     deriving (Eq, Show)
 
