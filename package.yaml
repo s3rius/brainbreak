@@ -1,0 +1,37 @@
+library:
+  source-dirs: src
+tests:
+  brainBreak-test:
+    source-dirs: test
+    main: Spec.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - brainBreak
+copyright: 2020 Author name here
+maintainer: example@example.com
+dependencies:
+- trifecta >= 2 && < 3
+- base >= 4.7 && < 5
+- parsers >= 0.12 && < 1
+name: brainBreak
+version: 0.1.0.0
+extra-source-files:
+- README.md
+- ChangeLog.md
+author: Author name here
+github: githubuser/brainBreak
+license: BSD3
+executables:
+  brainBreak-exe:
+    source-dirs: app
+    main: Main.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - brainBreak
+description: Please see the README on GitHub at <https://github.com/githubuser/brainBreak#readme>

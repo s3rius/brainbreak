@@ -1,0 +1,6 @@
+.stack-work/
+brainBreak.cabal
+stack.yaml.lock
+cabal.project.local
+*~
+dist-newstyle/
