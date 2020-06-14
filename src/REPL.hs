@@ -147,7 +147,10 @@ readCell = do
 
 runBrainCodeLoop :: BrainBreakBlock -> StateT REPLState IO ()
 runBrainCodeLoop  code = do
-    runBrainBreakCode code
+    cell <- getCell
+    case cell of
+        0 -> return ()
+        val -> runBrainBreakCode code
     cell <- getCell
     case cell of 
         0 -> return ()
