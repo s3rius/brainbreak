@@ -7,8 +7,7 @@ import           Control.Applicative
 data MainOptions = MainOptions
     {
         input :: String,
-        output :: String,
-        verbose :: Bool
+        output :: String
     }
 
 
@@ -30,4 +29,3 @@ instance Options MainOptions where
                              , optionDescription = "Compiled file output"
                              }
                     )
-            <*> simpleOption "v" False "Be more verbose"

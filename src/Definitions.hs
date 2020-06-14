@@ -11,3 +11,7 @@ data BrainBreakOperation = Increment
     deriving (Eq, Show)
 
 type BrainBreakBlock = [BrainBreakOperation]
+
+data REPLHelpers = PrintState  deriving (Show)
+
+data REPLCode = Code BrainBreakBlock | Helper REPLHelpers  deriving (Show)

@@ -7,6 +7,7 @@ import           Text.Parser.Combinators
 import           Text.Parser.Token
 import           Data.Functor
 
+-- Remove all comments from code. With recursive Loop code cleaning
 filterComments :: BrainBreakBlock -> BrainBreakBlock
 filterComments (Comment : ops) = [] ++ filterComments ops
 filterComments (Loop ops : otherCode) =
@@ -40,3 +41,13 @@ parseBrainBreak =
     parseRight     = symbolic '>' $> MoveRight
     parseIncrement = symbolic '+' $> Increment
     parseDecrement = symbolic '-' $> Decrement
+
+parseReplHelpers :: Parser REPLHelpers
+parseReplHelpers = parsePrintState
+    where parsePrintState = symbol ":state" $> PrintState
+
+parseREPLCode :: Parser REPLCode
+parseREPLCode = 
+    Helper <$> parseReplHelpers 
+    <|> Code <$> parseBrainBreak
+        
