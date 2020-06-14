@@ -1,6 +1,6 @@
 module CodeGenerator where
 
-import Definitions
+import           Definitions
 
 data State = State {
     parsed :: BrainBreakBlock,

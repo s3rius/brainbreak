@@ -1,6 +1,6 @@
 module Definitions where
 
-data BrainBreakOperation = Increment 
+data BrainBreakOperation = Increment
     | Decrement
     | MoveRight
     | MoveLeft

@@ -16,6 +16,7 @@ dependencies:
 - trifecta >= 2 && < 3
 - base >= 4.7 && < 5
 - parsers >= 0.12 && < 1
+- options >= 1.2 && < 1.3
 name: brainBreak
 version: 0.1.0.0
 extra-source-files:
