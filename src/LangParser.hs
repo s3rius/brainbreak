@@ -43,11 +43,12 @@ parseBrainBreak =
     parseDecrement = symbolic '-' $> Decrement
 
 parseReplHelpers :: Parser REPLHelpers
-parseReplHelpers = parsePrintState
-    where parsePrintState = symbol ":state" $> PrintState
+parseReplHelpers = parsePrintState <|> parsePrintBufChars <|> parsePrintBuf
+  where
+    parsePrintBuf      = symbol ":buf"   $> PrintBuf
+    parsePrintState    = symbol ":state" $> PrintState
+    parsePrintBufChars = symbol ":bufc"  $> PrintBufChars
 
 parseREPLCode :: Parser REPLCode
-parseREPLCode = 
-    Helper <$> parseReplHelpers 
-    <|> Code <$> parseBrainBreak
-        
+parseREPLCode = Helper <$> parseReplHelpers <|> Code <$> parseBrainBreak
+

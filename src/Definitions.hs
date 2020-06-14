@@ -1,6 +1,7 @@
 module Definitions where
 
-data BrainBreakOperation = Increment
+data BrainBreakOperation = 
+    Increment
     | Decrement
     | MoveRight
     | MoveLeft
@@ -12,6 +13,11 @@ data BrainBreakOperation = Increment
 
 type BrainBreakBlock = [BrainBreakOperation]
 
-data REPLHelpers = PrintState  deriving (Show)
+data REPLHelpers = 
+    PrintState
+    | PrintBuf
+    | PrintBufChars  deriving (Show)
 
-data REPLCode = Code BrainBreakBlock | Helper REPLHelpers  deriving (Show)
+data REPLCode = 
+    Code BrainBreakBlock 
+    | Helper REPLHelpers  deriving (Show)
