@@ -1,9 +1,9 @@
 module Main where
 
 import           Lib
-import           REPL
 import           Options
 import           MainOptions
+import           Interpreter.REPL
 import           System.Environment
 
 main :: IO ()

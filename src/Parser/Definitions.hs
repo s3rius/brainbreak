@@ -1,4 +1,4 @@
-module Definitions where
+module Parser.Definitions where
 
 data BrainBreakOperation = 
     Increment

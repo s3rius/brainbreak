@@ -1,5 +1,6 @@
 library:
-  source-dirs: src
+  source-dirs: 
+    - src
 tests:
   brainBreak-test:
     source-dirs: test

@@ -1,12 +1,13 @@
-module REPL where
+module Interpreter.Interpreter where
 
-import           LangParser
-import           Definitions
-import           Text.Trifecta
-import           Control.Monad.State
 import           System.IO
+import           Text.Trifecta
+import           Parser.LangParser
+import           Parser.Definitions
+import           Control.Monad.State
 
-data REPLState = REPLState{
+
+data InterpreterState = InterpreterState{
     buffer :: [Integer],
     inputNumber :: Integer,
     index :: Integer,
@@ -22,7 +23,7 @@ data Direction =
 replicaFactor :: Int
 replicaFactor = 3000
 
-io :: IO a -> StateT REPLState IO a
+io :: IO a -> StateT InterpreterState IO a
 io = liftIO
 
 prompt :: String -> IO String
@@ -31,8 +32,8 @@ prompt text = do
     hFlush stdout
     getLine
 
-defaultState :: REPLState
-defaultState = REPLState { buffer      = replicate replicaFactor 0
+defaultState :: InterpreterState
+defaultState = InterpreterState { buffer      = replicate replicaFactor 0
                          , inputNumber = 0
                          , index       = 0
                          , offset      = 0
@@ -54,11 +55,11 @@ expandIfNeeded old_buffer new_index = old_buffer
     needed len | len >= 0 = replicate replicaFactor 0
                | len < 0  = []
 
-increaseInputNumber :: REPLState -> REPLState
+increaseInputNumber :: InterpreterState -> InterpreterState
 increaseInputNumber state = state { inputNumber = inputNumber state + 1 }
 
 -- Fuction to update state accordingly to walk direction
-walkUpdate :: Direction -> REPLState -> REPLState
+walkUpdate :: Direction -> InterpreterState -> InterpreterState
 -- Walk left with buffer expnding if needed
 walkUpdate LeftDirection old_state = do
     let update_func t = t - 1
@@ -81,22 +82,22 @@ walkUpdate RightDirection old_state = do
               , offset = update_func $ offset old_state
               }
 
-updateStateCell :: (Integer -> Integer) -> REPLState -> REPLState
+updateStateCell :: (Integer -> Integer) -> InterpreterState -> InterpreterState
 updateStateCell update_func old_state = do
     let new_buffer = updateListElement (buffer old_state) (index old_state) update_func
     old_state{
         buffer = new_buffer
     }
 
-updateCell :: (Integer->Integer) -> StateT REPLState IO ()
+updateCell :: (Integer->Integer) -> StateT InterpreterState IO ()
 updateCell update_func = modify (updateStateCell update_func)
 
-walk :: Direction -> StateT REPLState IO ()
+walk :: Direction -> StateT InterpreterState IO ()
 walk direction = do
     modify (walkUpdate direction)
     return ()
 
-doAction :: REPLCode -> State REPLState ()
+doAction :: REPLCode -> State InterpreterState ()
 doAction = undefined
 
 
@@ -106,7 +107,7 @@ getBufferSlice size current_index current_buffer = do
     let end          = fromInteger $ current_index + size
     drop start $ take end current_buffer
 
-runHelper :: REPLHelpers -> StateT REPLState IO ()
+runHelper :: REPLHelpers -> StateT InterpreterState IO ()
 runHelper PrintState = do
     current_state <- get
     let buffer_slice = getBufferSlice 5 (index current_state) (buffer current_state)
@@ -127,25 +128,25 @@ runHelper PrintBufChars  = do
     io $ print $ map (\t -> toEnum (fromInteger t) :: Char) buffer_slice
     return ()
 
-getCell :: StateT REPLState IO Integer
+getCell :: StateT InterpreterState IO Integer
 getCell = do
     state <- get
     return $ buffer state !! fromInteger (index state)
 
-printCell :: StateT REPLState IO ()
+printCell :: StateT InterpreterState IO ()
 printCell = do
     cell <- getCell
     io $ putChar (toEnum (fromInteger cell) :: Char)
     io $ hFlush stdout
     return ()
 
-readCell :: StateT REPLState IO ()
+readCell :: StateT InterpreterState IO ()
 readCell = do
     char <- io getChar
     updateCell (const $ toInteger $ fromEnum char)
     return ()
 
-runBrainCodeLoop :: BrainBreakBlock -> StateT REPLState IO ()
+runBrainCodeLoop :: BrainBreakBlock -> StateT InterpreterState IO ()
 runBrainCodeLoop  code = do
     cell <- getCell
     case cell of
@@ -156,7 +157,7 @@ runBrainCodeLoop  code = do
         0 -> return ()
         val -> runBrainCodeLoop code
 
-runBrainBreakOperation :: BrainBreakOperation -> StateT REPLState IO ()
+runBrainBreakOperation :: BrainBreakOperation -> StateT InterpreterState IO ()
 runBrainBreakOperation MoveLeft         = walk LeftDirection
 runBrainBreakOperation MoveRight        = walk RightDirection
 runBrainBreakOperation Increment        = updateCell (+1)
@@ -166,31 +167,8 @@ runBrainBreakOperation Read             = readCell
 runBrainBreakOperation (Loop code)      = runBrainCodeLoop code
 runBrainBreakOperation Comment          = return ()
 
-runBrainBreakCode :: BrainBreakBlock -> StateT REPLState IO ()
+runBrainBreakCode :: BrainBreakBlock -> StateT InterpreterState IO ()
 runBrainBreakCode (x : xs) = do
     runBrainBreakOperation x
     runBrainBreakCode xs
 runBrainBreakCode [] = return ()
-
-
-replCodeRunner :: REPLCode -> StateT REPLState IO ()
-replCodeRunner code = case code of
-    Helper helper  -> runHelper helper
-    Code   bb_code -> runBrainBreakCode $ filterComments bb_code
-
-runREPL :: StateT REPLState IO ()
-runREPL = do
-    state <- get
-    io $ putStr $ "\nIn [" ++ show (inputNumber state) ++ "]: "
-    io $ hFlush stdout
-    input <- io getLine
-    let code = parseString parseREPLCode mempty input
-    case code of
-        Success code -> replCodeRunner code
-        Failure info -> io $ print (_errDoc info)
-    modify increaseInputNumber
-    runREPL
-
-
-startREPL :: IO ()
-startREPL = evalStateT runREPL defaultState

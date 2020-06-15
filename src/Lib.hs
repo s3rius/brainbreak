@@ -1,11 +1,12 @@
 module Lib where
 
-import           REPL
 import           Data.List
-import           LangParser
-import           Definitions
 import           Text.Trifecta
+import           Interpreter.REPL
+import           Parser.LangParser
+import           Parser.Definitions
 import           Control.Monad.State
+import           Interpreter.Interpreter
 
 
 runFile :: String -> IO ()

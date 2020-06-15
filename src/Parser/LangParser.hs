@@ -1,11 +1,12 @@
-module LangParser where
-import           Control.Applicative
-import           Text.Trifecta
+module Parser.LangParser where
+    
 import           Data.Maybe                     ( catMaybes )
-import           Definitions
-import           Text.Parser.Combinators
-import           Text.Parser.Token
 import           Data.Functor
+import           Text.Trifecta
+import           Text.Parser.Token
+import           Parser.Definitions
+import           Control.Applicative
+import           Text.Parser.Combinators
 
 -- Remove all comments from code. With recursive Loop code cleaning
 filterComments :: BrainBreakBlock -> BrainBreakBlock
