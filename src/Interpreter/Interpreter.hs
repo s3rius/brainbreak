@@ -5,6 +5,8 @@ import           Text.Trifecta
 import           Parser.LangParser
 import           Parser.Definitions
 import           Control.Monad.State
+import           Interpreter.Optimizer
+import           Interpreter.Definitions
 
 
 data InterpreterState = InterpreterState{
@@ -14,14 +16,9 @@ data InterpreterState = InterpreterState{
     offset :: Integer
 } deriving (Show)
 
-data Direction =
-    LeftDirection | RightDirection
-    deriving (Eq, Show)
-
-
 -- Initial buffer length and expanding rate
 replicaFactor :: Int
-replicaFactor = 3000
+replicaFactor = 350
 
 io :: IO a -> StateT InterpreterState IO a
 io = liftIO
@@ -34,22 +31,21 @@ prompt text = do
 
 defaultState :: InterpreterState
 defaultState = InterpreterState { buffer      = replicate replicaFactor 0
-                         , inputNumber = 0
-                         , index       = 0
-                         , offset      = 0
-                         }
+                                , inputNumber = 0
+                                , index       = 0
+                                , offset      = 0
+                                }
 
 updateListElement :: [Integer] -> Integer -> (Integer -> Integer) -> [Integer]
 updateListElement list index update = do
-    let element = update $ list !! fromInteger index
-    let (x,_:ys) = splitAt (fromInteger index) list
+    let element     = update $ list !! fromInteger index
+    let (x, _ : ys) = splitAt (fromInteger index) list
     x ++ element : ys
 
 expandIfNeeded :: [Integer] -> Integer -> [Integer]
--- Expand buffer to travel left but index is less than zero
-expandIfNeeded old_buffer (-1)      = replicate replicaFactor 0 ++ old_buffer
--- Expand buffer in need to travel Right
-expandIfNeeded old_buffer new_index = old_buffer
+expandIfNeeded old_buffer new_index
+    | new_index < 0 = replicate replicaFactor 0 ++ old_buffer
+    | new_index >= 0 =  old_buffer
     ++ needed (new_index - toInteger (length old_buffer))
   where
     needed len | len >= 0 = replicate replicaFactor 0
@@ -58,75 +54,48 @@ expandIfNeeded old_buffer new_index = old_buffer
 increaseInputNumber :: InterpreterState -> InterpreterState
 increaseInputNumber state = state { inputNumber = inputNumber state + 1 }
 
--- Fuction to update state accordingly to walk direction
-walkUpdate :: Direction -> InterpreterState -> InterpreterState
--- Walk left with buffer expnding if needed
-walkUpdate LeftDirection old_state = do
-    let update_func t = t - 1
+-- Fuction to update state accordingly to pointer movement 
+walkUpdate :: Integer -> InterpreterState -> InterpreterState
+walkUpdate steps old_state = do
+    let update_func t = t + steps
     let updated_buffer =
             expandIfNeeded (buffer old_state) (update_func $ index old_state)
     -- Finding diff because we need to update current index correctly
     let len_diff =
             toInteger $ length updated_buffer - length (buffer old_state)
-    old_state { buffer = updated_buffer
-              , index  = update_func $ index old_state + len_diff
-              , offset = update_func $ offset old_state
-              }
+    -- Finding new index of our pointer
+    let new_index = case () of
+            _ | steps < 0 -> update_func $ index old_state + len_diff
+              | steps > 0 -> update_func $ index old_state
 
-walkUpdate RightDirection old_state = do
-    let update_func t = t + 1
-    let updated_buffer =
-            expandIfNeeded (buffer old_state) (update_func $ index old_state)
     old_state { buffer = updated_buffer
-              , index  = update_func $ index old_state
+              , index  = new_index
               , offset = update_func $ offset old_state
               }
 
 updateStateCell :: (Integer -> Integer) -> InterpreterState -> InterpreterState
 updateStateCell update_func old_state = do
-    let new_buffer = updateListElement (buffer old_state) (index old_state) update_func
-    old_state{
-        buffer = new_buffer
-    }
+    let new_buffer =
+            updateListElement (buffer old_state) (index old_state) update_func
+    old_state { buffer = new_buffer }
 
-updateCell :: (Integer->Integer) -> StateT InterpreterState IO ()
+updateCell :: (Integer -> Integer) -> StateT InterpreterState IO ()
 updateCell update_func = modify (updateStateCell update_func)
 
-walk :: Direction -> StateT InterpreterState IO ()
-walk direction = do
-    modify (walkUpdate direction)
+walk :: Integer -> StateT InterpreterState IO ()
+walk steps = do
+    modify (walkUpdate steps)
     return ()
 
 doAction :: REPLCode -> State InterpreterState ()
 doAction = undefined
 
 
-getBufferSlice :: Integer -> Integer ->  [Integer] -> [Integer]
+getBufferSlice :: Integer -> Integer -> [Integer] -> [Integer]
 getBufferSlice size current_index current_buffer = do
-    let start        = fromInteger $ current_index - size
-    let end          = fromInteger $ current_index + size
+    let start = fromInteger $ current_index - size
+    let end   = fromInteger $ current_index + size
     drop start $ take end current_buffer
-
-runHelper :: REPLHelpers -> StateT InterpreterState IO ()
-runHelper PrintState = do
-    current_state <- get
-    let buffer_slice = getBufferSlice 5 (index current_state) (buffer current_state)
-    io $ putStrLn $ "Current index: " ++ show (index current_state)
-    io $ putStrLn $ "Offset from start: " ++ show (offset current_state)
-    io $ putStrLn $ "part of curren buffer: \n" ++ show buffer_slice
-    return ()
-
-runHelper PrintBuf = do
-    current_state <- get
-    let buffer_slice = getBufferSlice 5 (index current_state) (buffer current_state)
-    io $ print buffer_slice
-    return ()
-
-runHelper PrintBufChars  = do
-    current_state <- get
-    let buffer_slice = getBufferSlice 5 (index current_state) (buffer current_state)
-    io $ print $ map (\t -> toEnum (fromInteger t) :: Char) buffer_slice
-    return ()
 
 getCell :: StateT InterpreterState IO Integer
 getCell = do
@@ -146,29 +115,30 @@ readCell = do
     updateCell (const $ toInteger $ fromEnum char)
     return ()
 
-runBrainCodeLoop :: BrainBreakBlock -> StateT InterpreterState IO ()
-runBrainCodeLoop  code = do
+runInterpreterLoop :: InterpreterCodeBlock -> StateT InterpreterState IO ()
+runInterpreterLoop code = do
     cell <- getCell
     case cell of
-        0 -> return ()
-        val -> runBrainBreakCode code
+        0   -> return ()
+        val -> runInterpreterCode code
     cell <- getCell
-    case cell of 
-        0 -> return ()
-        val -> runBrainCodeLoop code
+    case cell of
+        0   -> return ()
+        val -> runInterpreterLoop code
 
-runBrainBreakOperation :: BrainBreakOperation -> StateT InterpreterState IO ()
-runBrainBreakOperation MoveLeft         = walk LeftDirection
-runBrainBreakOperation MoveRight        = walk RightDirection
-runBrainBreakOperation Increment        = updateCell (+1)
-runBrainBreakOperation Decrement        = updateCell (\t -> t - 1)
-runBrainBreakOperation Write            = printCell
-runBrainBreakOperation Read             = readCell
-runBrainBreakOperation (Loop code)      = runBrainCodeLoop code
-runBrainBreakOperation Comment          = return ()
+runInterpreterOperation :: InterpreterCode -> StateT InterpreterState IO ()
+runInterpreterOperation (InterAdd value) = updateCell (+ value)
+runInterpreterOperation (InterMov step ) = walk step
+runInterpreterOperation (InterSet value) = updateCell (const value)
+runInterpreterOperation InterRead        = readCell
+runInterpreterOperation InterWrite       = printCell
+runInterpreterOperation (InterLoop code) = runInterpreterLoop code
+
+runInterpreterCode :: InterpreterCodeBlock -> StateT InterpreterState IO ()
+runInterpreterCode (x : xs) = do
+    runInterpreterOperation x
+    runInterpreterCode xs
+runInterpreterCode _ = return ()
 
 runBrainBreakCode :: BrainBreakBlock -> StateT InterpreterState IO ()
-runBrainBreakCode (x : xs) = do
-    runBrainBreakOperation x
-    runBrainBreakCode xs
-runBrainBreakCode [] = return ()
+runBrainBreakCode = runInterpreterCode . optimize
