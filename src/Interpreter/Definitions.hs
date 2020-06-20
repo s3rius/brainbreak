@@ -2,9 +2,9 @@ module Interpreter.Definitions where
 
 
 data InterpreterCode = 
-    InterAdd Integer
+    InterAdd Int
     | InterMov Integer
-    | InterSet Integer
+    | InterSet Int
     | InterRead
     | InterWrite
     | InterLoop [InterpreterCode]

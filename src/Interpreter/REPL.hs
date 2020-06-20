@@ -28,7 +28,7 @@ runHelper PrintBufChars = do
     current_state <- get
     let buffer_slice =
             getBufferSlice 5 (index current_state) (buffer current_state)
-    io $ print $ map (\t -> toEnum (fromInteger t) :: Char) buffer_slice
+    io $ print $ map (\t -> toEnum t :: Char) buffer_slice
     return ()
 
 

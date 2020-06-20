@@ -14,6 +14,7 @@ tests:
 copyright: 2020 Author name here
 maintainer: example@example.com
 dependencies:
+- containers >= 0.6 && < 1
 - mtl >= 2.2.2 && < 3
 - trifecta >= 2 && < 3
 - base >= 4.7 && < 5
