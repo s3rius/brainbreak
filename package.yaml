@@ -3,7 +3,7 @@ library:
     - src
 tests:
   brainBreak-test:
-    source-dirs: test
+    source-dirs: tests
     main: Spec.hs
     ghc-options:
     - -threaded
@@ -11,7 +11,8 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - brainBreak
-copyright: 2020 Author name here
+    - hspec >= 2.7.1 && < 2.8
+copyright: 2020 s3rius
 maintainer: example@example.com
 dependencies:
 - containers >= 0.6 && < 1
@@ -25,8 +26,8 @@ version: 0.1.0.0
 extra-source-files:
 - README.md
 - ChangeLog.md
-author: Author name here
-github: githubuser/brainBreak
+author: s3rius
+github: s3rius/brainBreak
 license: BSD3
 executables:
   brainBreak-exe:
@@ -38,4 +39,4 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - brainBreak
-description: Please see the README on GitHub at <https://github.com/githubuser/brainBreak#readme>
+description: BrainFuck interpreter written in Haskell. See more at https://github.com/s3rius/brainBreak

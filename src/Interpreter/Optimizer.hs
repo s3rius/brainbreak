@@ -13,7 +13,7 @@ Optiomization plans:
  * Dead code elimination
  * Instruction conversion
 
- ## Insstruction merging
+Insstruction merging
  Precalculate the result of operation brefore compile/During interpreting.
     +++ --- ++ => ++
     +++ --- --- => ---
@@ -21,16 +21,16 @@ Optiomization plans:
     > <<<< => <<<<
     +++ --- => Deletes operation
 
-## Efficient cell zeroing
+Efficient cell zeroing
     [-] -> Set current cell to zero
 
-## Dead code elimination
+Dead code elimination
     Because the next cell is probably zero, delete the second loop.
     Maybe this check is unnecesary.
     [+>][<-] => [+>]
     Also remove Loops at the begining of the programm.
 
-## Instruction conversion
+Instruction conversion
     Just for efficency
     [-]+++ => Set 0, Add 3 => Set 3
     +++[-] => Set 0

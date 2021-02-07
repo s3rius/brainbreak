@@ -1,6 +1,6 @@
 module Parser.LangParser where
     
-import           Data.Maybe                     ( catMaybes )
+import           Data.Maybe
 import           Data.Functor
 import           Text.Trifecta
 import           Text.Parser.Token

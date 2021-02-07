@@ -16,8 +16,8 @@ type BrainBreakBlock = [BrainBreakOperation]
 data REPLHelpers = 
     PrintState
     | PrintBuf
-    | PrintBufChars  deriving (Show)
+    | PrintBufChars  deriving (Show, Eq)
 
 data REPLCode = 
     Code BrainBreakBlock 
-    | Helper REPLHelpers  deriving (Show)
+    | Helper REPLHelpers  deriving (Show, Eq)

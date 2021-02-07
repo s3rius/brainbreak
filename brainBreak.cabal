@@ -1,0 +1,87 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.3.
+--
+-- see: https://github.com/sol/hpack
+
+name:           brainBreak
+version:        0.1.0.0
+description:    BrainFuck interpreter written in Haskell. See more at https://github.com/s3rius/brainBreak
+homepage:       https://github.com/s3rius/brainBreak#readme
+bug-reports:    https://github.com/s3rius/brainBreak/issues
+author:         s3rius
+maintainer:     example@example.com
+copyright:      2020 s3rius
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/s3rius/brainBreak
+
+library
+  exposed-modules:
+      CodeGenerator
+      Interpreter.Definitions
+      Interpreter.Interpreter
+      Interpreter.Optimizer
+      Interpreter.REPL
+      Lib
+      Parser.Definitions
+      Parser.LangParser
+  other-modules:
+      Paths_brainBreak
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6 && <1
+    , mtl >=2.2.2 && <3
+    , options >=1.2 && <1.3
+    , parsers >=0.12 && <1
+    , trifecta >=2 && <3
+  default-language: Haskell2010
+
+executable brainBreak-exe
+  main-is: Main.hs
+  other-modules:
+      MainOptions
+      Paths_brainBreak
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , brainBreak
+    , containers >=0.6 && <1
+    , mtl >=2.2.2 && <3
+    , options >=1.2 && <1.3
+    , parsers >=0.12 && <1
+    , trifecta >=2 && <3
+  default-language: Haskell2010
+
+test-suite brainBreak-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      OptimizerTests
+      ParserTests
+      TestUtils
+      Paths_brainBreak
+  hs-source-dirs:
+      tests
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , brainBreak
+    , containers >=0.6 && <1
+    , hspec >=2.7.1 && <2.8
+    , mtl >=2.2.2 && <3
+    , options >=1.2 && <1.3
+    , parsers >=0.12 && <1
+    , trifecta >=2 && <3
+  default-language: Haskell2010

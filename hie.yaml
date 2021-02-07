@@ -1,2 +1,16 @@
 cradle:
   stack:
+    - path: "./src"
+      component: "brainBreak:lib"
+
+    - path: "./app/Main.hs"
+      component: "brainBreak:exe:brainBreak-exe"
+
+    - path: "./app/MainOptions.hs"
+      component: "brainBreak:exe:brainBreak-exe"
+
+    - path: "./app/Paths_brainBreak.hs"
+      component: "brainBreak:exe:brainBreak-exe"
+
+    - path: "./tests"
+      component: "brainBreak:test:brainBreak-test"
