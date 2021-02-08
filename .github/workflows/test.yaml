@@ -15,9 +15,8 @@ jobs:
         with:
           python-version: '3.8.5'
 
-      - name: Setup stack
-        run: |
-          wget -qO- https://get.haskellstack.org/ | sh
+      - name: Setup path
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install test dependencies 👨🏻‍💻
         run: |
