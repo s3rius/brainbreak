@@ -1,5 +1,5 @@
 module Parser.LangParser where
-    
+
 import           Data.Maybe
 import           Data.Functor
 import           Text.Trifecta
@@ -10,7 +10,7 @@ import           Text.Parser.Combinators
 
 -- Remove all comments from code. With recursive Loop code cleaning
 filterComments :: BrainBreakBlock -> BrainBreakBlock
-filterComments (Comment : ops) = [] ++ filterComments ops
+filterComments (Comment : ops) = filterComments ops
 filterComments (Loop ops : otherCode) =
     Loop (filterComments ops) : filterComments otherCode
 filterComments (op : ops) = op : filterComments ops

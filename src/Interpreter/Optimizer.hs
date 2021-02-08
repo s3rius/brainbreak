@@ -1,5 +1,8 @@
 module Interpreter.Optimizer
-    ( optimize
+    (   
+        optimize,
+        optimizer,
+        preprocess,
     )
 where
 
@@ -53,9 +56,10 @@ canBeMerged (InterMov  _) (InterMov  _) = True
 canBeMerged (InterAdd  _) (InterAdd  _) = True
 canBeMerged (InterSet  _) (InterSet  _) = True
 canBeMerged (InterSet  _) (InterAdd  _) = True
+canBeMerged (InterSet  0) (InterLoop _) = True
 canBeMerged (InterAdd  _) (InterSet  _) = True
 canBeMerged (InterLoop _) (InterLoop _) = True
-canBeMerged _             _             = False
+canBeMerged _             _              = False
 
 
 mergeOperations :: InterpreterCode -> InterpreterCode -> InterpreterCode
@@ -63,6 +67,7 @@ mergeOperations (InterMov  a) (InterMov  b) = InterMov (a + b)
 mergeOperations (InterAdd  a) (InterAdd  b) = InterAdd (a + b)
 mergeOperations (InterSet  a) (InterSet  b) = InterSet b
 mergeOperations (InterSet  a) (InterAdd  b) = InterSet (a + b)
+mergeOperations (InterSet  0) (InterLoop b) = InterSet 0
 mergeOperations (InterAdd  a) (InterSet  b) = InterSet b
 mergeOperations (InterLoop a) (InterLoop b) = InterLoop a
 mergeOperations _             _             = error "Operations can't be merged"
@@ -90,8 +95,9 @@ optimizer processed (x : xs)
 
 removeStartLoops :: InterpreterCodeBlock -> InterpreterCodeBlock
 removeStartLoops [] = []
-removeStartLoops (x : xs) | canBeMerged x (InterLoop []) = removeStartLoops xs
-                          | otherwise                    = xs
+removeStartLoops (x : xs) = case x of 
+    InterLoop code -> removeStartLoops xs
+    _  -> x: xs
 
 preprocess :: BrainBreakBlock -> InterpreterCodeBlock
 preprocess = map mapCodes
