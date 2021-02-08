@@ -23,6 +23,16 @@ jobs:
           pip install pre-commit
           stack install
           stack install hfmt
+          stack install hpc-lcov
 
       - name: Run pre-commit 👀
         run: pre-commit run -a
+
+      - name: Generate coverage report 🤭
+        run: hpc-lcov -o lcov.info
+
+      - name: Publish to coveralls 🌟
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./lcov.info

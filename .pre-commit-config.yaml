@@ -14,7 +14,7 @@ repos:
         language: system
         types: [haskell]
       - id: tests
-        entry: stack test
+        entry: stack test --coverage
         name: tests
         language: system
         pass_filenames: false
