@@ -1,0 +1,21 @@
+---
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: hfmt
+        entry: hfmt -w
+        name: hfmt
+        language: system
+        types: [haskell]
+      - id: tests
+        entry: stack test
+        name: tests
+        language: system
+        pass_filenames: false
+        types: [haskell]

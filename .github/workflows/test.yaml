@@ -1,0 +1,28 @@
+name: "BrainBreak tests"
+
+on: [ push ]
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Set up Python 🏗
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.5'
+
+      - name: Setup stack
+        uses: mstksg/setup-stack@v1
+
+      - name: Install test dependencies 👨🏻‍💻
+        run: |
+          pip install pre-commit
+          stack install
+          stack install hfmt
+
+      - name: Run pre-commit 👀
+        run: pre-commit run -a
