@@ -5,12 +5,12 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           brainBreak
-version:        0.1.0.0
+version:        0.1.2
 description:    BrainFuck interpreter written in Haskell. See more at https://github.com/s3rius/brainBreak
 homepage:       https://github.com/s3rius/brainBreak#readme
 bug-reports:    https://github.com/s3rius/brainBreak/issues
 author:         s3rius
-maintainer:     example@example.com
+maintainer:     win10@list.ru
 copyright:      2020 s3rius
 license:        BSD3
 license-file:   LICENSE
@@ -46,7 +46,7 @@ library
     , trifecta >=2 && <3
   default-language: Haskell2010
 
-executable brainBreak-exe
+executable bb
   main-is: Main.hs
   other-modules:
       MainOptions
