@@ -3,7 +3,7 @@ module Interpreter.REPL where
 import           Control.Monad.State
 import           Interpreter.Interpreter
 import           Parser.Definitions
-import           Parser.LangParser
+import           Parser.Parser
 import           System.IO
 import           Text.Trifecta
 

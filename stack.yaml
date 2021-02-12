@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-16.0
+resolver: lts-16.31
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -45,7 +45,6 @@ extra-deps:
   - stylish-haskell-0.9.4.4@sha256:ea514922e47ea05a924355a841abd26d18101037c46fbb90e201ae83582a8728,4953
   - ghc-lib-parser-ex-8.8.5.8@sha256:04f164fd6a4a5b0c5627cf7fadd79174c3b1d4c696dc481a9909266bd6a2a6aa,2760
   - haskell-src-exts-1.22.0@sha256:f558923a9c8f57402c33a8cc871b934027a5c65414404c87239f6cbd7357d54e,4541
-
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

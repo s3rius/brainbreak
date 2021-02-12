@@ -6,7 +6,7 @@ import           Data.Map.Strict
 import           Interpreter.Definitions
 import           Interpreter.Optimizer
 import           Parser.Definitions
-import           Parser.LangParser
+import           Parser.Parser
 import           System.IO
 import           Text.Trifecta
 

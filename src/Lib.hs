@@ -1,11 +1,9 @@
 module Lib where
 
+import           Compiler.Compiler
 import           Control.Monad.State
-import           Data.List
 import           Interpreter.Interpreter
-import           Interpreter.REPL
-import           Parser.Definitions
-import           Parser.LangParser
+import           Parser.Parser
 import           Text.Trifecta
 
 runFile :: String -> IO ()
@@ -16,4 +14,8 @@ runFile filename = do
     Failure info -> print (_errDoc info)
 
 compileFile :: String -> String -> IO ()
-compileFile input output = putStrLn "Compiling code developing is in progress."
+compileFile inputFile outputFile = do
+  parse_result <- parseFromFileEx parseBrainBreak inputFile
+  case parse_result of
+    Success code -> putStrLn $ compileBrainBreak code
+    Failure info -> print (_errDoc info)

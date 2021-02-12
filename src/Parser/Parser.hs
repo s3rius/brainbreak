@@ -1,4 +1,4 @@
-module Parser.LangParser where
+module Parser.Parser where
 
 import           Control.Applicative
 import           Data.Functor

@@ -25,14 +25,15 @@ source-repository head
 
 library
   exposed-modules:
-      CodeGenerator
+      Compiler.Backends.C.AST
+      Compiler.Compiler
       Interpreter.Definitions
       Interpreter.Interpreter
       Interpreter.Optimizer
       Interpreter.REPL
       Lib
       Parser.Definitions
-      Parser.LangParser
+      Parser.Parser
   other-modules:
       Paths_brainBreak
   hs-source-dirs:
@@ -68,8 +69,8 @@ test-suite brainBreak-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      OptimizerTests
-      ParserTests
+      Interpreter.OptimizerSpec
+      Parser.ParserSpec
       TestUtils
       Paths_brainBreak
   hs-source-dirs:
@@ -79,7 +80,8 @@ test-suite brainBreak-test
       base >=4.7 && <5
     , brainBreak
     , containers >=0.6 && <1
-    , hspec >=2.7.1 && <2.8
+    , hspec >=2.7.6 && <3
+    , hspec-discover >=2.7.6 && <3
     , mtl >=2.2.2 && <3
     , options >=1.2 && <1.3
     , parsers >=0.12 && <1

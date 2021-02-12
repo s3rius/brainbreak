@@ -15,8 +15,16 @@ jobs:
         with:
           python-version: '3.8.5'
 
-      - name: Setup path
+      - name: Setup path ⚒
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Enabling stack cache 💾
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.stack
+            ~/.local/bin
+          key: ${{ runner.os }}-stack
 
       - name: Install test dependencies 👨🏻‍💻
         run: |

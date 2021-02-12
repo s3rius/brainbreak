@@ -46,4 +46,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - brainBreak
-    - hspec >= 2.7.1 && < 2.8
+    - hspec >= 2.7.6 && < 3
+    - hspec-discover >= 2.7.6 && < 3

@@ -6,7 +6,7 @@ module Interpreter.Optimizer
 
 import           Interpreter.Definitions
 import           Parser.Definitions
-import           Parser.LangParser
+import           Parser.Parser
 
 {-
 Optiomization plans:
