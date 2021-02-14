@@ -1,6 +1,7 @@
 module Compiler.Compiler where
 
-import           Parser.Definitions
+import           Compiler.Backends.C.Main
+import           Interpreter.Definitions
 
-compileBrainBreak :: BrainBreakBlock -> String
-compileBrainBreak _ = "Compiled"
+compile :: String -> InterpreterCodeBlock -> IO ()
+compile = compileC

@@ -2,11 +2,11 @@ module Interpreter.Definitions where
 
 data InterpreterCode
   = InterAdd Int
-  | InterMov Integer
+  | InterMov Int
   | InterSet Int
   | InterRead
   | InterWrite
-  | InterLoop [InterpreterCode]
+  | InterLoop InterpreterCodeBlock
   deriving (Eq, Show)
 
 type InterpreterCodeBlock = [InterpreterCode]

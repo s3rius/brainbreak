@@ -26,6 +26,9 @@ source-repository head
 library
   exposed-modules:
       Compiler.Backends.C.AST
+      Compiler.Backends.C.Builder
+      Compiler.Backends.C.Main
+      Compiler.Backends.C.Tanslator
       Compiler.Compiler
       Interpreter.Definitions
       Interpreter.Interpreter
@@ -41,9 +44,13 @@ library
   build-depends:
       base >=4.7 && <5
     , containers >=0.6 && <1
+    , directory >=1.3 && <2
+    , lens >=4.18.1 && <5
     , mtl >=2.2.2 && <3
     , options >=1.2 && <1.3
     , parsers >=0.12 && <1
+    , process >=1.6 && <2
+    , string-interpolate >=0.2 && <1
     , trifecta >=2 && <3
   default-language: Haskell2010
 
@@ -59,9 +66,13 @@ executable bb
       base >=4.7 && <5
     , brainBreak
     , containers >=0.6 && <1
+    , directory >=1.3 && <2
+    , lens >=4.18.1 && <5
     , mtl >=2.2.2 && <3
     , options >=1.2 && <1.3
     , parsers >=0.12 && <1
+    , process >=1.6 && <2
+    , string-interpolate >=0.2 && <1
     , trifecta >=2 && <3
   default-language: Haskell2010
 
@@ -80,10 +91,14 @@ test-suite brainBreak-test
       base >=4.7 && <5
     , brainBreak
     , containers >=0.6 && <1
+    , directory >=1.3 && <2
     , hspec >=2.7.6 && <3
     , hspec-discover >=2.7.6 && <3
+    , lens >=4.18.1 && <5
     , mtl >=2.2.2 && <3
     , options >=1.2 && <1.3
     , parsers >=0.12 && <1
+    , process >=1.6 && <2
+    , string-interpolate >=0.2 && <1
     , trifecta >=2 && <3
   default-language: Haskell2010

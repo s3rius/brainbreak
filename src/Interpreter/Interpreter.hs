@@ -12,10 +12,10 @@ import           Text.Trifecta
 
 data InterpreterState =
   InterpreterState
-    { buffer      :: M.Map Integer Int
+    { buffer      :: M.Map Int Int
     , inputNumber :: Integer
-    , index       :: Integer
-    , offset      :: Integer
+    , index       :: Int
+    , offset      :: Int
     }
   deriving (Show)
 
@@ -32,10 +32,10 @@ defaultState :: InterpreterState
 defaultState =
   InterpreterState {buffer = M.empty, inputNumber = 0, index = 0, offset = 0}
 
-getBufferSlice :: Integer -> Integer -> M.Map Integer Int -> [Int]
+getBufferSlice :: Int -> Int -> M.Map Int Int -> [Int]
 getBufferSlice size current_index current_buffer = do
-  let start = fromInteger $ current_index - size
-  let end = fromInteger $ current_index + size
+  let start = current_index - size
+  let end = current_index + size
   let map_array = [start .. end]
   Prelude.map (\el -> findWithDefault 0 el current_buffer) map_array
 
@@ -43,7 +43,7 @@ increaseInputNumber :: InterpreterState -> InterpreterState
 increaseInputNumber state = state {inputNumber = inputNumber state + 1}
 
 -- Fuction to update state accordingly to pointer movement
-walkUpdate :: Integer -> InterpreterState -> InterpreterState
+walkUpdate :: Int -> InterpreterState -> InterpreterState
 walkUpdate steps old_state = do
   let update_func t = t + steps
     -- Finding new index of our pointer
@@ -62,7 +62,7 @@ updateStateCell update_func old_state = do
 updateCell :: (Int -> Int) -> StateT InterpreterState IO ()
 updateCell update_func = modify (updateStateCell update_func)
 
-walk :: Integer -> StateT InterpreterState IO ()
+walk :: Int -> StateT InterpreterState IO ()
 walk steps = do
   modify (walkUpdate steps)
   return ()

@@ -3,6 +3,7 @@ module Lib where
 import           Compiler.Compiler
 import           Control.Monad.State
 import           Interpreter.Interpreter
+import           Interpreter.Optimizer
 import           Parser.Parser
 import           Text.Trifecta
 
@@ -17,5 +18,5 @@ compileFile :: String -> String -> IO ()
 compileFile inputFile outputFile = do
   parse_result <- parseFromFileEx parseBrainBreak inputFile
   case parse_result of
-    Success code -> putStrLn $ compileBrainBreak code
+    Success code -> compile outputFile $ optimize code
     Failure info -> print (_errDoc info)
