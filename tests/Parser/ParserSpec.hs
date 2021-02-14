@@ -18,16 +18,16 @@ spec = do
     it "can parse io operation" $ do
       parse_bb "," `shouldBe` [Read]
       parse_bb "." `shouldBe` [Write]
-    it "can parse comments" $ do parse_bb "a" `shouldBe` [Comment]
+    it "can parse comments" $ parse_bb "a" `shouldBe` [Comment]
     it "can parse loops" $ do
       parse_bb "[-]" `shouldBe` [Loop [Decrement]]
       parse_bb "[+]" `shouldBe` [Loop [Increment]]
       parse_bb "[>]" `shouldBe` [Loop [MoveRight]]
       parse_bb "[<]" `shouldBe` [Loop [MoveLeft]]
   describe "Comment Filter" $ do
-    it "can filter plain comments" $ do
+    it "can filter plain comments" $
       (filterComments . parse_bb) "test+" `shouldBe` [Increment]
-    it "can filter nested comments" $ do
+    it "can filter nested comments" $
       (filterComments . parse_bb) "t[test+]" `shouldBe` [Loop [Increment]]
   let parse_repl = genParser parseREPLCode
   describe "BrainBreak repl" $ do
@@ -35,5 +35,5 @@ spec = do
       parse_repl ":buf" `shouldBe` Helper PrintBuf
       parse_repl ":bufc" `shouldBe` Helper PrintBufChars
       parse_repl ":state" `shouldBe` Helper PrintState
-    it "can parse BrainBreak" $ do
+    it "can parse BrainBreak" $
       parse_repl "+>" `shouldBe` Code [Increment, MoveRight]

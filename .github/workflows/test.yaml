@@ -31,6 +31,7 @@ jobs:
           pip install pre-commit
           stack install
           stack install hfmt
+          stack install hlint
           stack install hpc-lcov
 
       - name: Run pre-commit 👀

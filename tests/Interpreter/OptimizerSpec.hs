@@ -24,7 +24,7 @@ spec = do
     it "removes loops at start" $ do
       testOptimize "[+]+++" `shouldBe` [InterAdd 3]
       testOptimize "[+][+]+++" `shouldBe` [InterAdd 3]
-  describe "BrainBreak preprocessor" $ do
+  describe "BrainBreak preprocessor" $
     it "can map parser instructions" $ do
       testPreprocess "++" `shouldBe` [InterAdd 1, InterAdd 1]
       testPreprocess "--" `shouldBe` [InterAdd (-1), InterAdd (-1)]
