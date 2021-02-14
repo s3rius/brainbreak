@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      CLI
       Compiler.Backends.C.AST
       Compiler.Backends.C.Builder
       Compiler.Backends.C.Main

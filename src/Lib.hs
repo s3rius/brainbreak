@@ -1,5 +1,6 @@
 module Lib where
 
+import           CLI
 import           Compiler.Compiler
 import           Control.Monad.State
 import           Interpreter.Interpreter
@@ -14,9 +15,9 @@ runFile filename = do
     Success code -> evalStateT (runBrainBreakCode code) defaultState
     Failure info -> print (_errDoc info)
 
-compileFile :: String -> String -> IO ()
-compileFile inputFile outputFile = do
+compileFile :: String -> String -> CompileBackends -> IO ()
+compileFile inputFile outputFile backend = do
   parse_result <- parseFromFileEx parseBrainBreak inputFile
   case parse_result of
-    Success code -> compile outputFile $ optimize code
+    Success code -> compile outputFile backend $ optimize code
     Failure info -> print (_errDoc info)

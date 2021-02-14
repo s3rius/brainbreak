@@ -1,13 +1,8 @@
 module MainOptions where
 
+import           CLI
 import           Control.Applicative
 import           Options
-
-data MainOptions =
-  MainOptions
-    { input  :: String
-    , output :: String
-    }
 
 instance Options MainOptions where
   defineOptions =
@@ -27,4 +22,13 @@ instance Options MainOptions where
            { optionLongFlags = ["output"]
            , optionShortFlags = ['o']
            , optionDescription = "Compiled file output"
+           }) <*>
+    defineOption
+      (optionType_enum "CompileBackends")
+      (\o ->
+         o
+           { optionLongFlags = ["backend"]
+           , optionShortFlags = ['b']
+           , optionDescription = "Change compilation backend"
+           , optionDefault = Cpp
            })

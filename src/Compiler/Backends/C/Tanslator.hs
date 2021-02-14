@@ -3,6 +3,7 @@
 module Compiler.Backends.C.Tanslator where
 
 import           Compiler.Backends.C.AST
+import           Data.String             (unlines)
 import           Data.String.Interpolate
 
 translateHeaders :: CHeader -> String
