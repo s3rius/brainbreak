@@ -2,9 +2,7 @@ module Parser.Parser where
 
 import           Control.Applicative
 import           Data.Functor
-import           Data.Maybe
 import           Parser.Definitions
-import           Text.Parser.Combinators
 import           Text.Parser.Token
 import           Text.Trifecta
 

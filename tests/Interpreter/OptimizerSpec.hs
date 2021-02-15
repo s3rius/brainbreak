@@ -2,7 +2,6 @@ module Interpreter.OptimizerSpec where
 
 import           Interpreter.Definitions
 import           Interpreter.Optimizer
-import           Parser.Definitions
 import           Parser.Parser
 import           Test.Hspec
 import           TestUtils

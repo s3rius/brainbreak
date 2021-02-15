@@ -1,7 +1,5 @@
 module Compiler.Backends.C.AST where
 
-import           Control.Lens
-
 data CType
   = CTypeInt
   | CTypeMap CType CType

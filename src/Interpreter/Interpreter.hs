@@ -6,9 +6,7 @@ import           Data.Map.Strict
 import           Interpreter.Definitions
 import           Interpreter.Optimizer
 import           Parser.Definitions
-import           Parser.Parser
 import           System.IO
-import           Text.Trifecta
 
 data InterpreterState =
   InterpreterState

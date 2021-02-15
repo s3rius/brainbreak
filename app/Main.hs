@@ -5,7 +5,6 @@ import           Interpreter.REPL
 import           Lib
 import           MainOptions
 import           Options
-import           System.Environment
 
 main :: IO ()
 main =

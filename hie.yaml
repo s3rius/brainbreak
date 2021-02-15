@@ -4,13 +4,13 @@ cradle:
       component: "brainBreak:lib"
 
     - path: "./app/Main.hs"
-      component: "brainBreak:exe:brainBreak-exe"
+      component: "brainBreak:exe:bb"
 
     - path: "./app/MainOptions.hs"
-      component: "brainBreak:exe:brainBreak-exe"
+      component: "brainBreak:exe:bb"
 
     - path: "./app/Paths_brainBreak.hs"
-      component: "brainBreak:exe:brainBreak-exe"
+      component: "brainBreak:exe:bb"
 
     - path: "./tests"
       component: "brainBreak:test:brainBreak-test"
