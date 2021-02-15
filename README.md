@@ -1,3 +1,7 @@
+[![Coverage Status](https://img.shields.io/coveralls/github/s3rius/brainbreak?style=for-the-badge)](https://coveralls.io/github/s3rius/brainbreak)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/s3rius/brainbreak/BrainBreak%20tests?style=for-the-badge)](https://github.com/s3rius/brainbreak/actions)
+[![Haskell version](https://img.shields.io/badge/haskell-lts--16.31-green?style=for-the-badge)](https://github.com/commercialhaskell/stackage-snapshots/blob/master/lts/16/31.yaml)
+
 # brainBreak
 
 Simple BrainFuck toolkit written in haskell.
