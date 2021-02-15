@@ -21,9 +21,15 @@ spec = do
       testOptimize ">>>" `shouldBe` [InterMov 3]
       testOptimize "[-]+++" `shouldBe` [InterSet 3]
       testOptimize "+++[-]" `shouldBe` [InterSet 0]
+      testOptimize ">[-][+>]" `shouldBe` [InterMov 1, InterSet 0]
+    it "removes usless statements" $ do
+      testOptimize ">+-" `shouldBe` [InterMov 1]
+      testOptimize "><>" `shouldBe` [InterMov 1]
+      testOptimize ">><" `shouldBe` [InterMov 1]
+      testOptimize ">[]" `shouldBe` [InterMov 1]
     it "removes loops at start" $ do
       testOptimize "[+]+++" `shouldBe` [InterAdd 3]
-      testOptimize "[+][+]+++" `shouldBe` [InterAdd 3]
+      testOptimize "[+][+]" `shouldBe` []
   describe "BrainBreak preprocessor" $
     it "can map parser instructions" $ do
       testPreprocess "++" `shouldBe` [InterAdd 1, InterAdd 1]

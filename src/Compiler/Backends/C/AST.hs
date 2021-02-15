@@ -8,10 +8,7 @@ data CType
   deriving (Eq, Show)
 
 data CVar
-  = CVar
-      { _name :: String
-      , _type :: CType
-      }
+  = CVar String CType
   | MapElement CVar CVar
   deriving (Eq, Show)
 
@@ -21,7 +18,10 @@ data CConst
   | CEmptyMap CType CType
   deriving (Eq, Show)
 
-type CValue = Either CVar CConst
+data CValue
+  = CValue CVar
+  | CValueConst CConst
+  deriving (Show, Eq)
 
 data COperation
   = CPrint CVar

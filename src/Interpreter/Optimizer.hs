@@ -59,25 +59,19 @@ canBeMerged (InterLoop _) (InterLoop _) = True
 canBeMerged _ _                         = False
 
 mergeOperations :: InterpreterCode -> InterpreterCode -> InterpreterCode
-mergeOperations (InterMov a) (InterMov b) = InterMov (a + b)
-mergeOperations (InterAdd a) (InterAdd b) = InterAdd (a + b)
-mergeOperations (InterSet a) (InterSet b) = InterSet b
-mergeOperations (InterSet a) (InterAdd b) = InterSet (a + b)
-mergeOperations (InterSet 0) (InterLoop b) = InterSet 0
-mergeOperations (InterAdd a) (InterSet b) = InterSet b
+mergeOperations (InterMov a) (InterMov b)   = InterMov (a + b)
+mergeOperations (InterAdd a) (InterAdd b)   = InterAdd (a + b)
+mergeOperations (InterSet a) (InterSet b)   = InterSet b
+mergeOperations (InterSet a) (InterAdd b)   = InterSet (a + b)
+mergeOperations (InterSet 0) (InterLoop b)  = InterSet 0
+mergeOperations (InterAdd a) (InterSet b)   = InterSet b
 mergeOperations (InterLoop a) (InterLoop b) = InterLoop a
-mergeOperations _ _ = error "Operations can't be merged"
 
 isNoAction :: InterpreterCode -> Bool
 isNoAction action
-  | action == InterMov 0 = True
   | action == InterAdd 0 = True
   | action == InterLoop [] = True
   | otherwise = False
-
-isOpositeMovement :: InterpreterCode -> InterpreterCode -> Bool
-isOpositeMovement (InterMov 1) (InterMov (-1)) = True
-isOpositeMovement _ _                          = False
 
 optimizer ::
      InterpreterCodeBlock -> InterpreterCodeBlock -> InterpreterCodeBlock

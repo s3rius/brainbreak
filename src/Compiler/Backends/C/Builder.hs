@@ -20,14 +20,14 @@ mapInstructions (InterAdd value) = do
     CAdd
       (MapElement buffer counter)
       (MapElement buffer counter)
-      (Right (CConstInt value))
+      (CValueConst (CConstInt value))
 mapInstructions (InterMov value) = do
   counter <- gets _counter
-  return $ CAdd counter counter (Right (CConstInt value))
+  return $ CAdd counter counter (CValueConst (CConstInt value))
 mapInstructions (InterSet value) = do
   counter <- gets _counter
   buffer <- gets _buffer
-  return $ CSet (MapElement buffer counter) (Right (CConstInt value))
+  return $ CSet (MapElement buffer counter) (CValueConst (CConstInt value))
 mapInstructions InterRead = do
   counter <- gets _counter
   buffer <- gets _buffer
@@ -55,11 +55,11 @@ buildModule intrepreterCode = do
   let operations = evalState (parseInterpreterCode intrepreterCode) initialState
   let c_module =
         CModule
-          [CInclude "cstdio", CInclude "map", CUsingNamespace "std"]
+          [CInclude "cstdio", CInclude "unordered_map", CUsingNamespace "std"]
           ([ CDeclare counter
            , CDeclare buffer
-           , CSet counter (Right (CConstInt 0))
-           , CSet buffer (Right (CEmptyMap CTypeInt CTypeInt))
+           , CSet counter (CValueConst (CConstInt 0))
+           , CSet buffer (CValueConst (CEmptyMap CTypeInt CTypeInt))
            ] ++
            operations)
   c_module

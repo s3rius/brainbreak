@@ -28,6 +28,25 @@ It works as ipython. Every time you hit the Enter button, code evaluates.
 It's simple as is.
 
 REPL itself inspired by the [IPython](https://ipython.org/) project and looks similar to it.
+Addition commands:
+```
+In [0]: ++++
+
+# Print current REPL state.
+In [1]: :state
+Current index: 0
+Offset from start: 0
+part of curren buffer:
+[0,0,0,0,0,4,0,0,0,0,0]
+
+# Print current buffer as list of integers.
+In [2]: :buf
+[0,0,0,0,0,4,0,0,0,0,0]
+
+# Print current buffer as characters.
+In [3]: :bufc
+"\NUL\NUL\NUL\NUL\NUL\EOT\NUL\NUL\NUL\NUL\NUL"
+```
 
 # Interpreter
 [![asciicast](https://asciinema.org/a/Fi2TuDXSLVjqFjsKocHpz6gW3.svg)](https://asciinema.org/a/Fi2TuDXSLVjqFjsKocHpz6gW3?autoplay=1)

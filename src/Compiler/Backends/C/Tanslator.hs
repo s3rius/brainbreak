@@ -3,7 +3,7 @@
 module Compiler.Backends.C.Tanslator where
 
 import           Compiler.Backends.C.AST
-import           Data.String             (unlines)
+
 import           Data.String.Interpolate
 
 translateHeaders :: CHeader -> String
@@ -13,19 +13,19 @@ translateHeaders (CUsingNamespace name) = [i|using namespace #{name};|]
 translateVar :: CVar -> String
 translateVar (MapElement var1 var2) =
   [i|#{translateVar var1}[#{translateVar var2}]|]
-translateVar var = _name var
+translateVar (CVar name _) = name
 
 translateType :: CType -> String
 translateType CTypeInt = "int"
 translateType (CTypeMap key val) =
-  [i|map<#{translateType key},#{translateType val}>|]
+  [i|unordered_map<#{translateType key},#{translateType val}>|]
 
 translateValue :: CValue -> String
-translateValue (Left var) = translateVar var
-translateValue (Right (CConstInt value)) = show value
-translateValue (Right (CConstString value)) = [i|"#{value}"|]
-translateValue (Right (CEmptyMap key val)) =
-  [i|map<#{translateType key}, #{translateType val}>()|]
+translateValue (CValue var) = translateVar var
+translateValue (CValueConst (CConstInt value)) = show value
+translateValue (CValueConst (CConstString value)) = [i|"#{value}"|]
+translateValue (CValueConst (CEmptyMap key val)) =
+  [i|unordered_map<#{translateType key}, #{translateType val}>()|]
 
 translateOperations :: COperation -> String
 translateOperations (CPrint var) = [i|printf("%c", #{translateVar var});|]
@@ -41,11 +41,8 @@ translateOperations (CAdd var1 var2 val) =
 translateOperations (CDecrease var1 var2 val) =
   [i|#{translateVar var1} = #{translateVar var2} - #{translateValue val};|]
 translateOperations (CLoop var ops) =
-  [i|
-while (#{translateVar var}){
-    #{unlines $ map (("\t" ++ ) . translateOperations) ops}
-}
-|]
+  [i|while (#{translateVar var}){
+#{unlines $ map (("\t" ++ ) . translateOperations) ops}}|]
 
 translateC :: CModule -> String
 translateC (CModule headers operations) =
