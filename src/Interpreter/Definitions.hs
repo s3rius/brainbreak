@@ -6,7 +6,9 @@ data InterpreterCode
   | InterSet Int
   | InterRead
   | InterWrite
-  | InterLoop InterpreterCodeBlock
+  | InterLoop
+      { _block :: InterpreterCodeBlock
+      }
   deriving (Eq, Show)
 
 type InterpreterCodeBlock = [InterpreterCode]

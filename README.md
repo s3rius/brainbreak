@@ -22,7 +22,7 @@ Additionally for compilation you need to have different compilers installed.
 For `C++` compilation you need to install `clang++`.
 
 # REPL
-[![asciicast](https://asciinema.org/a/myeE4cxgOblxB5QRWdIFw65zW.svg)](https://asciinema.org/a/myeE4cxgOblxB5QRWdIFw65zW?autoplay=1)
+[![asciicast](https://asciinema.org/a/k2YQQUaJdYsEjIOd0oJZxRMw9.svg)](https://asciinema.org/a/k2YQQUaJdYsEjIOd0oJZxRMw9?autoplay=1)
 You can just call `bb` to enter REPL.
 It works as ipython. Every time you hit the Enter button, code evaluates.
 It's simple as is.
@@ -49,7 +49,7 @@ In [3]: :bufc
 ```
 
 # Interpreter
-[![asciicast](https://asciinema.org/a/Fi2TuDXSLVjqFjsKocHpz6gW3.svg)](https://asciinema.org/a/Fi2TuDXSLVjqFjsKocHpz6gW3?autoplay=1)
+[![asciicast](https://asciinema.org/a/nElf1qUhNde6xancoMsV20WZ9.svg)](https://asciinema.org/a/nElf1qUhNde6xancoMsV20WZ9?autoplay=1)
 To run brainbreak as interpreter you need to provide a `brainFuck` file.
 ```bash
 bb -i /path/to/file.bf
@@ -57,8 +57,7 @@ bb -i /path/to/file.bf
 This command will optimize and evaluate the code from file.
 
 # Compiler
-[![asciicast](https://asciinema.org/a/klCIiJH1m846nuRfyuHRqZmJV.svg)](https://asciinema.org/a/klCIiJH1m846nuRfyuHRqZmJV?autoplay=1)
-
+[![asciicast](https://asciinema.org/a/NzCJc6t23TDSWxLO1QqQTNM79.svg)](https://asciinema.org/a/NzCJc6t23TDSWxLO1QqQTNM79?autoplay=1)
 To compile your bf files you need to provide input and output files.
 The backend option can be omitted.
 

@@ -22,6 +22,7 @@ spec = do
       testOptimize "[-]+++" `shouldBe` [InterSet 3]
       testOptimize "+++[-]" `shouldBe` [InterSet 0]
       testOptimize ">[-][+>]" `shouldBe` [InterMov 1, InterSet 0]
+      testOptimize ">[>>>]" `shouldBe` [InterMov 1, InterLoop [InterMov 3]]
     it "removes usless statements" $ do
       testOptimize ">+-" `shouldBe` [InterMov 1]
       testOptimize "><>" `shouldBe` [InterMov 1]

@@ -73,6 +73,10 @@ isNoAction action
   | action == InterLoop [] = True
   | otherwise = False
 
+isLoop :: InterpreterCode -> Bool
+isLoop (InterLoop _) = True
+isLoop _             = False
+
 optimizer ::
      InterpreterCodeBlock -> InterpreterCodeBlock -> InterpreterCodeBlock
 optimizer processed [] = processed
@@ -80,6 +84,7 @@ optimizer [] other = optimizer [head other] (tail other)
 optimizer processed (x:xs)
   | canBeMerged (last processed) x =
     optimizer (init processed ++ [mergeOperations (last processed) x]) xs
+  | isLoop x = optimizer (processed ++ [InterLoop (optimizer [] (_block x))]) xs
   | otherwise = optimizer (processed ++ [x]) xs
 
 removeStartLoops :: InterpreterCodeBlock -> InterpreterCodeBlock
