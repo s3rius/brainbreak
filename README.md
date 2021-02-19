@@ -11,11 +11,11 @@ This project covers 3 things:
 * [Interpreter](#Interpreter);
 * [Compiler](#Compiler).
 
-You can check it by your self.
+You can check it by yourself.
 
 # Instalation
 You need to install [Stack](https://docs.haskellstack.org/en/stable/README/) before continue.
-Sine you've got the Stack,  you can simply install this project by running:
+Since you've got the Stack,  you can simply install this project by running:
 ```bash
 git clone https://github.com/s3rius/brainbreak.git
 cd brainbreak
@@ -53,7 +53,7 @@ In [3]: :bufc
 ```
 
 # Interpreter
-[![asciicast](https://asciinema.org/a/nElf1qUhNde6xancoMsV20WZ9.svg)](https://asciinema.org/a/nElf1qUhNde6xancoMsV20WZ9?autoplay=1)
+[![asciicast](https://asciinema.org/a/P3QNSP4mgzigUTwS4ITfxbSrv.svg)](https://asciinema.org/a/P3QNSP4mgzigUTwS4ITfxbSrv?autoplay=1)
 To run brainbreak as interpreter you need to provide a `brainFuck` file.
 ```bash
 bb -i /path/to/file.bf
